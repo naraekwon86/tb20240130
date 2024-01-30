@@ -15,7 +15,11 @@ public class AppTest {
     void t1(){
         ByteArrayOutputStream byteArrayOutputStream = TestUtil.setOutToByteArray();
 
-        new App().run();
+        Scanner scanner = TestUtil.genScanner("""
+                종료
+                """.stripIndent());
+
+        new App(scanner).run();
 
         String out = byteArrayOutputStream.toString().trim();
         TestUtil.clearSetOutToByteArray(byteArrayOutputStream);
@@ -23,6 +27,7 @@ public class AppTest {
         assertThat(out)
                 .contains("== 명언 앱 ==");
     }
+
     @Test
     @DisplayName("종료")
     void t2(){
