@@ -23,7 +23,18 @@ public class App {
         while (true) {
             final String cmd = scanner.nextLine().trim();
 
+            final String [] cmdBits = cmd.split("\\?" , 2);
+            final String action = cmdBits[0].trim();
+            final String queryString = cmdBits.length == 2 ? cmdBits[1].trim() : "";
+
             switch (cmd){
+                case "삭제" ->{
+                    final String idStr = queryString.replace("id=","");
+                    final long id = Long.parseLong(idStr);
+
+                quotations
+                        .removeIf(quotation -> quotation.getId() == id);
+                }
                 case "등록" -> {
                     System.out.print("명언 : ");
                     final String content = scanner.nextLine().trim();
