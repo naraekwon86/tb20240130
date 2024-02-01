@@ -158,4 +158,67 @@ public class AppTest {
                 .doesNotContain("2 / 홍길동 / 과거에 집착하지 마라.")
                 .contains("1 / 작자미상 / 현재를 사랑하라.");
     }
+    @Test
+    @DisplayName("삭제 2")
+    void t10(){
+        final String out = run("""
+                등록
+                현재를 사랑하라.
+                작자미상
+                등록
+                과거에 집착하지 마라.
+                홍길동
+                수정?id=2
+                과거에 집착하지 마라!
+                홍길동님
+                목록
+                """);
+
+        assertThat(out)
+                .contains("번호 / 작가 / 명언")
+                .contains("------------------------------")
+                .doesNotContain("2 / 홍길동 / 과거에 집착하지 마라.")
+                .contains("2 / 홍길동님 / 과거에 집착하지 마라!")
+                .contains("1 / 작자미상 / 현재를 사랑하라.");
+    }
+    @Test
+    @DisplayName("존재하지 않는 명언에 대한 삭제 예외처리")
+    void t11(){
+        final String out = run("""
+                등록
+                현재를 사랑하라.
+                작자미상
+                등록
+                과거에 집착하지 마라.
+                홍길동
+                삭제?id=2
+                삭제?id=3
+                """);
+
+        assertThat(out)
+                .contains("2번 명언이 삭제되었습니다.")
+                .contains("3번 명언은 존재하지 않습니다.");
+
+    }
+    @Test
+    @DisplayName("존재하지 않는 명언에 대한 수정 예외처리")
+    void t12(){
+        final String out = run("""
+                등록
+                현재를 사랑하라.
+                작자미상
+                등록
+                과거에 집착하지 마라.
+                홍길동
+                수정?id=2
+                과거에 집착하지 마라!
+                홍길동님
+                수정?id=3
+                """);
+
+        assertThat(out)
+                .contains("2번 명언이 수정되었습니다.")
+                .contains("3번 명언은 존재하지 않습니다.");
+
+    }
 }
